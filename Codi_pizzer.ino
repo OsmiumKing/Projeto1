@@ -1,4 +1,4 @@
-int speakerPin=10;
+int speakerPin=10 ;
 int length=5;
 char notes[]="cf";
 int beats[]={1,1,1,1};
