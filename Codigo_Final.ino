@@ -134,7 +134,9 @@ void setup()
 
 void loop()
 {
-
+  analogWrite(6, 255); //ENA pin
+  analogWrite(7, 255); //ENB pin
+  
   while (Serial.available() > 0) {
     inputByte = Serial.read();
     Serial.println(inputByte);
