@@ -242,7 +242,7 @@ void loop()
 
         //Thermistor
         Serial.print("Temperatura: ");
-        int VRT = analogRead(A1);
+        int VRT = analogRead(A2);
         Serial.print(VRT);
         Serial.print("ºC");
         Serial.println();
