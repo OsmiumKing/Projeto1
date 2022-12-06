@@ -2,9 +2,7 @@
 //
 
 #include<LiquidCrystal.h>
-
-LiquidCrystal lcd(13, 12, 11, 10, 9, 8);
-
+LiquidCrystal lcd(13, 12, 9, 8, 7, 6);
 // Make custom characters:
 byte Degree[] = {
   B00110,
@@ -109,13 +107,9 @@ void setup()
   pinMode(motor2pin1, OUTPUT);
   pinMode(motor2pin2, OUTPUT);
 
-  //motor speed
-  pinMode(6, OUTPUT);
-  pinMode(7, OUTPUT);
 
   // Specify the LCD's number of columns and rows:
   lcd.begin(16, 2);
-  pinMode(A0, INPUT);
 
   // Create a new characters:
   lcd.createChar(0, Degree);
@@ -134,9 +128,7 @@ void setup()
 
 void loop()
 {
-  analogWrite(6, 255); //ENA pin
-  analogWrite(7, 255); //ENB pin
-  
+
   while (Serial.available() > 0) {
     inputByte = Serial.read();
     Serial.println(inputByte);
@@ -148,7 +140,7 @@ void loop()
       digitalWrite(motor2pin1, LOW);
       digitalWrite(motor2pin2, HIGH);
 
-      delay(400);
+      delay(600);
 
       digitalWrite(motor2pin1, LOW);
       digitalWrite(motor2pin2, LOW);
@@ -163,7 +155,7 @@ void loop()
       digitalWrite(motor2pin1, HIGH);
       digitalWrite(motor2pin2, LOW);
 
-      delay(400);
+      delay(600);
 
       digitalWrite(motor2pin1, LOW);
       digitalWrite(motor2pin2, LOW);
@@ -178,7 +170,7 @@ void loop()
       digitalWrite(motor2pin1, HIGH);
       digitalWrite(motor2pin2, LOW);
 
-      delay(400);
+      delay(300);
 
       digitalWrite(motor2pin1, LOW);
       digitalWrite(motor2pin2, LOW);
@@ -193,7 +185,7 @@ void loop()
       digitalWrite(motor1pin1, LOW);
       digitalWrite(motor1pin2, HIGH);
 
-      delay(400);
+      delay(300);
 
       digitalWrite(motor2pin1, LOW);
       digitalWrite(motor2pin2, LOW);
@@ -220,7 +212,7 @@ void loop()
         Serial.println(" ");
 
 
-        //LDR
+        //LDR media
         Serial.print("Luminosidade: ");
         int value = (value1 + value2) / 2;
         value = map(value, 1023, 0, 0, 100);
@@ -248,10 +240,9 @@ void loop()
         //pode demorar 10 milissegundos a estabilizar
 
 
-
         //Thermistor
         Serial.print("Temperatura: ");
-        int VRT = analogRead(A2);
+        int VRT = analogRead(A1);
         Serial.print(VRT);
         Serial.print("ºC");
         Serial.println();
@@ -282,25 +273,145 @@ void loop()
         lcd.setCursor(3, 1);
         lcd.write(byte(0));
 
+        //Voltage
+
+        Serial.print("Voltagem: ");
+        float sensorValue = analogRead(A3);
+        float Volt = sensorValue * (5.0 / 1023.0);
+        Serial.print(Volt);
+        Serial.print(" V");
+        Serial.println();
+        Serial.println();
+        Serial.println();
+
+        //Voltagem
+
+        lcd.setCursor(10, 0);
+        lcd.print(Volt);
+
+        lcd.setCursor(15, 0);
+        lcd.print("V");
 
 
 
-        // Print all the custom characters:
+        //Capacity and battery
 
-        lcd.setCursor(8, 1);
-        lcd.write(byte(1));
 
-        lcd.setCursor(9, 1);
-        lcd.write(byte(2));
 
-        lcd.setCursor(10, 1);
-        lcd.write(byte(3));
+        if (Volt < 3.61) {
+          lcd.setCursor(10, 1);
+          lcd.print("0%");
+          lcd.setCursor(14, 1);
+          lcd.write(byte(1));
+        } else if (Volt < 3.69) {
+          lcd.setCursor(10, 1);
+          lcd.print("5%");
+          lcd.setCursor(14, 1);
+          lcd.write(byte(1));
+        } else if (Volt < 3.71 && Volt > 3.69) {
+          lcd.setCursor(10, 1);
+          lcd.print("10%");
+          lcd.setCursor(14, 1);
+          lcd.write(byte(1));
+        } else if (Volt < 3.73 && Volt > 3.71) {
+          lcd.setCursor(10, 1);
+          lcd.print("15%");
+          lcd.setCursor(14, 1);
+          lcd.write(byte(1));
+        } else if (Volt < 3.75 && Volt > 3.73) {
+          lcd.setCursor(10, 1);
+          lcd.print("20%");
+          lcd.setCursor(14, 1);
+          lcd.write(byte(1));
+        } else if (Volt < 3.77 && Volt > 3.75) {
+          lcd.setCursor(10, 1);
+          lcd.print("25%");
+          lcd.setCursor(14, 1);
+          lcd.write(byte(2));
+        } else if (Volt < 3.79 && Volt > 3.77) {
+          lcd.setCursor(10, 1);
+          lcd.print("30%");
+          lcd.setCursor(14, 1);
+          lcd.write(byte(2));
+        } else if (Volt < 3.80 && Volt > 3.79) {
+          lcd.setCursor(10, 1);
+          lcd.print("35%");
+          lcd.setCursor(14, 1);
+          lcd.write(byte(2));
+        } else if (Volt < 3.82 && Volt > 3.80) {
+          lcd.setCursor(10, 1);
+          lcd.print("40%");
+          lcd.setCursor(14, 1);
+          lcd.write(byte(2));
+        } else if (Volt < 3.84 && Volt > 3.82) {
+          lcd.setCursor(10, 1);
+          lcd.print("45%");
+          lcd.setCursor(14, 1);
+          lcd.write(byte(3));
+        } else if (Volt < 3.85 && Volt > 3.84) {
+          lcd.setCursor(10, 1);
+          lcd.print("50%");
+          lcd.setCursor(14, 1);
+          lcd.write(byte(3));
+        } else if (Volt < 3.87 && Volt > 3.85) {
+          lcd.setCursor(10, 1);
+          lcd.print("55%");
+          lcd.setCursor(14, 1);
+          lcd.write(byte(3));
+        } else if (Volt < 3.91 && Volt > 3.87) {
+          lcd.setCursor(10, 1);
+          lcd.print("60%");
+          lcd.setCursor(14, 1);
+          lcd.write(byte(3));
+        } else if (Volt < 3.95 && Volt > 3.91) {
+          lcd.setCursor(10, 1);
+          lcd.print("65%");
+          lcd.setCursor(14, 1);
+          lcd.write(byte(4));
+        } else if (Volt < 3.98 && Volt > 3.95) {
+          lcd.setCursor(10, 1);
+          lcd.print("70%");
+          lcd.setCursor(14, 1);
+          lcd.write(byte(4));
+        } else if (Volt < 4.02 && Volt > 3.98) {
+          lcd.setCursor(10, 1);
+          lcd.print("75%");
+          lcd.setCursor(14, 1);
+          lcd.write(byte(4));
+        } else if (Volt < 4.07 && Volt > 4.02) {
+          lcd.setCursor(10, 1);
+          lcd.print("80%");
+          lcd.setCursor(14, 1);
+          lcd.write(byte(4));
+        } else if (Volt < 4.11 && Volt > 4.07) {
+          lcd.setCursor(10, 1);
+          lcd.print("85%");
+          lcd.setCursor(14, 1);
+          lcd.write(byte(5));
+        } else if (Volt < 4.15 && Volt > 4.11) {
+          lcd.setCursor(10, 1);
+          lcd.print("90%");
+          lcd.setCursor(14, 1);
+          lcd.write(byte(5));
+        } else if (Volt < 4.20 && Volt > 4.15) {
+          lcd.setCursor(10, 1);
+          lcd.print("95%");
+          lcd.setCursor(14, 1);
+          lcd.write(byte(5));
+        } else if (Volt == 4.20) {
+          lcd.setCursor(10, 1);
+          lcd.print("100%");
+          lcd.setCursor(14, 1);
+          lcd.write(byte(5));
+        }
 
-        lcd.setCursor(11, 1);
-        lcd.write(byte(4));
 
-        lcd.setCursor(12, 1);
-        lcd.write(byte(5));
+
+
+
+
+
+        //sun
 
         lcd.setCursor(0, 0);
         lcd.write(byte(6));
@@ -308,16 +419,13 @@ void loop()
         lcd.setCursor(1, 0);
         lcd.write(byte(7));
 
+        delay(500);
 
+        lcd.clear();
 
-
-
+        
         //Sistema de movimento conforme a percentagem de luminosidade:
 
-
-        //Controlling speed (0 = off and 255 = max speed):
-        analogWrite(6, 100); //ENA pin
-        analogWrite(7, 200); //ENB pin
 
         if ( value1 > value2 ) {
           if (value1 - value2 >= 6) {
@@ -328,7 +436,7 @@ void loop()
             digitalWrite(motor2pin1, HIGH);
             digitalWrite(motor2pin2, LOW);
 
-            delay(500);
+            delay(200);
 
             digitalWrite(motor1pin1, LOW);
             digitalWrite(motor1pin2, LOW);
@@ -350,7 +458,7 @@ void loop()
             digitalWrite(motor1pin1, LOW);
             digitalWrite(motor1pin2, HIGH);
 
-            delay(500);
+            delay(200);
 
             digitalWrite(motor2pin1, LOW);
             digitalWrite(motor2pin2, LOW);
