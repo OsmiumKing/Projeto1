@@ -8,7 +8,7 @@ int length = 5;
 char notes[] = "e gd cde gd e gD cg";
 int beats[] = {1, 1, 1, 1};
 int tempo = 250;
-int t=0;
+int t = 0;
 // Make custom characters:
 byte Degree[] = {
   B00110,
@@ -239,7 +239,7 @@ void loop()
 
         //LDR media
         Serial.print("Luminosidade: ");
-        int value = (value1 + value2) / 2;
+        int value = (analogRead(A0)+ analogRead(A1)) / 2;
         value = map(value, 1023, 0, 0, 100);
         Serial.print(value);
         Serial.print("%");
@@ -264,7 +264,7 @@ void loop()
         }
         //pode demorar 10 milissegundos a estabilizar
 
-        
+
 
         //Voltage
 
@@ -279,10 +279,10 @@ void loop()
 
         //Voltagem
 
-        lcd.setCursor(0, 0);
+        lcd.setCursor(0, 1);
         lcd.print(Volt);
 
-        lcd.setCursor(5, 0);
+        lcd.setCursor(5, 1);
         lcd.print("V");
 
 
@@ -396,6 +396,11 @@ void loop()
           lcd.print("100%");
           lcd.setCursor(14, 1);
           lcd.write(byte(5));
+        } else if (Volt > 4.20) {
+          lcd.setCursor(10, 1);
+          lcd.print("100%");
+          lcd.setCursor(14, 1);
+          lcd.write(byte(5));
         }
 
 
@@ -440,28 +445,28 @@ void loop()
           } else {
             Serial.print("Nao se mexe");
           }
-          }else if (value2 > value1) {
-            
-            if (value2 - value1 >= 6) {
+        } else if (value2 > value1) {
 
-              digitalWrite(motor2pin1, LOW);
-              digitalWrite(motor2pin2, HIGH);
+          if (value2 - value1 >= 6) {
 
-              digitalWrite(motor1pin1, LOW);
-              digitalWrite(motor1pin2, HIGH);
+            digitalWrite(motor2pin1, LOW);
+            digitalWrite(motor2pin2, HIGH);
 
-              delay(200);
+            digitalWrite(motor1pin1, LOW);
+            digitalWrite(motor1pin2, HIGH);
 
-              digitalWrite(motor2pin1, LOW);
-              digitalWrite(motor2pin2, LOW);
+            delay(200);
 
-              digitalWrite(motor1pin1, LOW);
-              digitalWrite(motor1pin2, LOW);
+            digitalWrite(motor2pin1, LOW);
+            digitalWrite(motor2pin2, LOW);
 
-              Serial.print("Move-se x para a direita");
-            }else {
+            digitalWrite(motor1pin1, LOW);
+            digitalWrite(motor1pin2, LOW);
+
+            Serial.print("Move-se x para a direita");
+          } else {
             Serial.print("Nao se mexe");
-            }
+          }
         } else if ( value1 == value2 ) {
           t += 1;
           if (t == 15) {
