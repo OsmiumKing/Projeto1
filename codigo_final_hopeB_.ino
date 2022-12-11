@@ -264,39 +264,7 @@ void loop()
         }
         //pode demorar 10 milissegundos a estabilizar
 
-
-        //Thermistor
-        Serial.print("Temperatura: ");
-        int VRT = analogRead(A2);
-        Serial.print(VRT);
-        Serial.print("ºC");
-        Serial.println();
-        Serial.println();
-        Serial.println();
-
-        if (VRT < 10) {
-
-          lcd.setCursor(2, 1);
-          lcd.print(VRT);
-
-        } else if (VRT < 100 && VRT > 9) {
-
-          lcd.setCursor(1, 1);
-          lcd.print(VRT);
-
-        } else {
-
-          lcd.setCursor(0, 1);
-          lcd.print(VRT);
-        }
-
-
-        lcd.setCursor(4, 1);
-        lcd.print("C");
-
-
-        lcd.setCursor(3, 1);
-        lcd.write(byte(0));
+        
 
         //Voltage
 
@@ -311,10 +279,10 @@ void loop()
 
         //Voltagem
 
-        lcd.setCursor(10, 0);
+        lcd.setCursor(0, 0);
         lcd.print(Volt);
 
-        lcd.setCursor(15, 0);
+        lcd.setCursor(5, 0);
         lcd.print("V");
 
 
@@ -446,8 +414,6 @@ void loop()
 
         delay(500);
 
-        lcd.clear();
-
 
         //Sistema de movimento conforme a percentagem de luminosidade:
 
@@ -472,22 +438,6 @@ void loop()
 
             Serial.print("Move-se x para a esquerda");
           } else {
-            /*
-            t += 1;
-            if (t == 15) {
-              for (int i = 0; i < length; i++) {
-                if (notes[i] == ' ') {
-                  delay(tempo);
-                }
-
-                else {
-                  playNote(notes[i], 2 * tempo);
-
-                }
-              }
-              t = 0;
-            }
-            */
             Serial.print("Nao se mexe");
           }
           }else if (value2 > value1) {
@@ -510,22 +460,6 @@ void loop()
 
               Serial.print("Move-se x para a direita");
             }else {
-              /*
-              t += 1;
-              if (t == 15) {
-                for (int i = 0; i < length; i++) {
-                  if (notes[i] == ' ') {
-                    delay(tempo);
-                  }
-
-                  else {
-                    playNote(notes[i], 2 * tempo);
-
-                  }
-                }
-                t = 0;
-              }
-            */
             Serial.print("Nao se mexe");
             }
         } else if ( value1 == value2 ) {
@@ -546,7 +480,7 @@ void loop()
           Serial.print("Nao se mexe");
         }
 
-        delay(1000);
+        delay(1500);
 
         lcd.clear();
       }
